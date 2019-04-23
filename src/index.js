@@ -11,11 +11,13 @@ function handleFileSelect(evt) {
         reader.onloadend = (function(file) {
             console.log('end');
             return function(e) {
-                document.getElementById('json').value = file.result;
+                var data = JSON.parse(e.currentTarget.result);
+                console.log(data);
+                document.getElementById('json').value = e.currentTarget.result;
             };
         })(f);
 
-        reader.readAsText(f);
+        reader.readAsBinaryString(f);
     }
 }
 
