@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>UML viewer</title>
@@ -11,8 +6,11 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <input type="file" id="files" name="files[]" multiple />
+        <input type="file" id="file" />
         <textarea id="json"></textarea>
-        <script type="text/javascript" src="src/index.js"></script>
+        <div id="diagramm" class="mermaid"></div>
+        <script type="text/javascript" src="node_modules/mermaid/dist/mermaid.js"></script>
+        <script type="text/javascript" src="public/FileHandler.js"></script>
+        <script type="text/javascript" src="public/index.js"></script>
     </body>
 </html>
