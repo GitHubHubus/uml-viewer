@@ -11,7 +11,25 @@ class Drawer {
     }
     
     createRelations() {
+        let relations = '';
+
+        if (this._data.extend) {
+            relations += this.eol(this._data.extend + '-->' + this._data.name);
+        }
         
+        if (this._data.interfaces && this._data.interfaces.length > 0) {
+            for (let i = 0; i < this._data.interfaces.length; i++) {
+                relations += this.eol(this._data.name + '-.->' + this._data.interfaces[i]);
+            }
+        }
+
+        if (this._data.traits && this._data.traits.length > 0) {
+            for (let i = 0; i < this._data.traits.length; i++) {
+                relations += this.eol(this._data.name + '-.->' + this._data.traits[i]);
+            }
+        }
+
+        return relations;
     }
     
     createBlock() {
@@ -25,11 +43,7 @@ class Drawer {
                '"]'
         );
 
-        if (this._data.extend) {
-            data += this.eol(this._data.extend + '-->' + this._data.name);
-        }
-
-        return data;
+        return data + this.createRelations();
     }
     
     _getStyledName() {
