@@ -29,7 +29,11 @@ class Drawer {
             }
         }
 
-        return relations;
+        return relations + ';';
+    }
+    
+    createStyles() {
+        return this.eol('class ' + this._data.name + ' block;');
     }
     
     createBlock() {
@@ -43,7 +47,7 @@ class Drawer {
                '"]'
         );
 
-        return data + this.createRelations();
+        return data + this.eol(this.createRelations());
     }
     
     _getStyledName() {
@@ -84,8 +88,15 @@ class Drawer {
         for (let i = 0;i < this._data.constants.length; i++) {
             let c = this._data.constants[i];
             let type = c.type ? ': ' + c.type : '';
+            let value = '';
+            
+            
+            if (c.value !== undefined) {
+                value = c.value.toString();
+                value = value.length > 10 ? value.substring(0, 10) + '...' : c.value;
+            }
 
-            content += c.name + type + ' = ' + c.value + this.newline();
+            content += c.name + type + ' [ ' + value + ' ] ' + this.newline();
         }
 
         return this.separator() + this.newline() + content; 
