@@ -19,11 +19,8 @@ class Drawer {
                '["' +
                this._getStyledName() +
                this.newline() +
-               this.separator() +
-               this.newline() +
+               this._getStyledConstants() +
                this._getStyledProperties() +
-               this.separator() +
-               this.newline() +
                this._getStyledMethods() +
                '"]'
         );
@@ -40,6 +37,10 @@ class Drawer {
     }
     
     _getStyledProperties() {
+        if (!this._data.properties || this._data.properties.length === 0) {
+            return '';
+        }
+
         let content = '';
 
         for (let i = 0;i < this._data.properties.length; i++) {
@@ -52,14 +53,35 @@ class Drawer {
                 }
             }
             
-            let type = p.type || '';
-            content += this._modifiers[modifier] + '  ' + p.name + ': ' + type + this.newline();
+            let type = p.type ? ': ' + p.type : '';
+            content += this._modifiers[modifier] + '  ' + p.name + type + this.newline();
         }
         
-        return content; 
+        return this.separator() + this.newline() + content; 
+    }
+    
+    _getStyledConstants() {
+        if (!this._data.constants || this._data.constants.length === 0) {
+            return '';
+        }
+
+        let content = '';
+
+        for (let i = 0;i < this._data.constants.length; i++) {
+            let c = this._data.constants[i];
+            let type = c.type ? ': ' + c.type : '';
+
+            content += c.name + type + ' = ' + c.value + this.newline();
+        }
+
+        return this.separator() + this.newline() + content; 
     }
     
     _getStyledMethods() {
+        if (!this._data.methods || this._data.methods.length === 0) {
+            return '';
+        }
+
         let content = '';
 
         for (let i = 0;i < this._data.methods.length; i++) {
@@ -80,11 +102,11 @@ class Drawer {
                 }
             }
             
-            let type = m.type || '';
-            content += this._modifiers[modifier] + '  ' + m.name + '(' + argumentsContent.join(',') + '): ' + type + this.newline();
+            let type = m.type ? ': ' + m.type : '';
+            content += this._modifiers[modifier] + '  ' + m.name + '(' + argumentsContent.join(',') + ')' + type + this.newline();
         }
         
-        return content; 
+        return this.separator() + this.newline() + content; 
     }
     
     eol(text) {
