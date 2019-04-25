@@ -14,19 +14,25 @@ class Drawer {
         
     }
     
-    createBlock(index) {
-        return this.eol(index +
+    createBlock() {
+        let data = this.eol(this._data.name +
                '["' +
-               this.eol(this._getStyledName()) +
+               this._getStyledName() +
                this.newline() +
                this.separator() +
                this.newline() +
-               this.eol(this._getStyledProperties()) +
+               this._getStyledProperties() +
                this.separator() +
                this.newline() +
-               this.eol(this._getStyledMethods()) +
+               this._getStyledMethods() +
                '"]'
         );
+
+        if (this._data.extend) {
+            data += this.eol(this._data.extend + '-->' + this._data.name);
+        }
+
+        return data;
     }
     
     _getStyledName() {

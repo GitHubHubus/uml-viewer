@@ -15,7 +15,7 @@ let endHandler = function () {
         let content = drawer.createStartBlock();
         for (let i = 0; i < data.class.length; i++) {
             drawer.data = data.class[i];
-            content += drawer.createBlock(i);
+            content += drawer.createBlock();
         }
 
         document.getElementById('diagramm').textContent = content;
