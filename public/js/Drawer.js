@@ -1,7 +1,7 @@
 class Drawer {
     set data (data) { this._data = data;};
 
-    constructor (classData, options) {
+    constructor (classData) {
         this._modifiers = {'public': '+', 'private': '-', 'protected': '#'};
         this._data = classData;
     }
@@ -16,17 +16,17 @@ class Drawer {
         if (this._data.extend) {
             relations += this.eol(this._data.extend + '-->' + this._data.name);
         }
-        
-        if (this._data.interfaces && this._data.interfaces.length > 0) {
-            for (let i = 0; i < this._data.interfaces.length; i++) {
-                relations += this.eol(this._data.name + '-.->' + this._data.interfaces[i]);
-            }
+
+        if (this._data.interfaces) {
+            this._data.interfaces.forEach((name) => {
+                relations += this.eol(this._data.name + '-.->' + name);
+            });
         }
 
-        if (this._data.traits && this._data.traits.length > 0) {
-            for (let i = 0; i < this._data.traits.length; i++) {
-                relations += this.eol(this._data.name + '-.->' + this._data.traits[i]);
-            }
+        if (this._data.traits) {
+            this._data.traits.forEach((name) => {
+                relations += this.eol(this._data.name + '-.->' + name);
+            });
         }
 
         return relations + ';';
@@ -47,7 +47,7 @@ class Drawer {
                '"]'
         );
 
-        return data + this.eol(this.createRelations());
+        return data + this.createRelations();
     }
     
     _getStyledName() {
@@ -60,20 +60,20 @@ class Drawer {
         }
 
         let content = '';
-
-        for (let i = 0;i < this._data.properties.length; i++) {
-            let p = this._data.properties[i];
-            let modifier = 'public';
-            for (let j = 0; j < p.modifiers.length; j++) {
-                if (this._modifiers[p.modifiers[j]] !== undefined) {
-                    modifier = p.modifiers[j];
-                    break;
-                }
-            }
-            
+        
+        this._data.properties.forEach((p) => {
+            let modifier = '';
             let type = p.type ? ': ' + p.type : '';
-            content += this._modifiers[modifier] + '  ' + p.name + type + this.newline();
-        }
+
+            p.modifiers.forEach((m) => {
+                if (this._modifiers[m] !== undefined) {
+                    modifier = this._modifiers[m];
+                    return;
+                }
+            });
+
+            content += modifier + '  ' + p.name + type + this.newline();
+        });
         
         return this.separator() + this.newline() + content; 
     }
@@ -85,19 +85,18 @@ class Drawer {
 
         let content = '';
 
-        for (let i = 0;i < this._data.constants.length; i++) {
-            let c = this._data.constants[i];
-            let type = c.type ? ': ' + c.type : '';
+        this._data.constants.forEach((c) => {
             let value = '';
-            
-            
+            let type = c.type ? ': ' + c.type : '';
+
             if (c.value !== undefined) {
                 value = c.value.toString();
                 value = value.length > 10 ? value.substring(0, 10) + '...' : c.value;
+                value = ' [ ' + value + ' ] ';
             }
 
-            content += c.name + type + ' [ ' + value + ' ] ' + this.newline();
-        }
+            content += c.name + type + value + this.newline();
+        });
 
         return this.separator() + this.newline() + content; 
     }
@@ -109,27 +108,26 @@ class Drawer {
 
         let content = '';
 
-        for (let i = 0;i < this._data.methods.length; i++) {
-            let m = this._data.methods[i];
-            let modifier = 'public';
+        this._data.methods.forEach((m) => {
+            let modifier = '';
             let argumentsContent = [];
-
-            for (let j = 0; j < m.modifiers.length; j++) {
-                if (this._modifiers[m.modifiers[j]] !== undefined) {
-                    modifier = m.modifiers[j];
-                    break;
-                }
-            }
-            
-            for (let s = 0; s < m.arguments.length; s++) {
-                if (this._modifiers[m.modifiers[s]] !== undefined) {
-                    argumentsContent.push(m.arguments[s].type || '' + m.arguments[s].name);
-                }
-            }
-            
             let type = m.type ? ': ' + m.type : '';
-            content += this._modifiers[modifier] + '  ' + m.name + '(' + argumentsContent.join(',') + ')' + type + this.newline();
-        }
+            
+            m.modifiers.forEach((mod) => {
+                if (this._modifiers[mod] !== undefined) {
+                    modifier = this._modifiers[mod];
+                    return;
+                }
+            });
+            
+            m.arguments.forEach((a) => {
+                let atype = a.type ? a.type + ' ' : '';
+                argumentsContent.push(atype + a.name);
+            });
+            
+            
+            content += modifier + '  ' + m.name + '(' + argumentsContent.join(', ') + ')' + type + this.newline();
+        });
         
         return this.separator() + this.newline() + content; 
     }

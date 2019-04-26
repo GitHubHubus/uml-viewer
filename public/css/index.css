@@ -1,0 +1,21 @@
+html, body {
+    height: 100% !important;
+    overflow-y: hidden;
+}
+.block {
+    max-width:100px;
+    word-wrap: break-word;
+}
+.block > rect {
+    fill: #FF0000;
+    stroke: #FFFF00;
+}
+.control {
+    height: 17% !important
+}
+.diagramm-wrapper {
+    max-width: 100% !important;
+    height: 81% !important;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}

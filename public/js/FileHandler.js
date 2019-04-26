@@ -1,8 +1,5 @@
 class FileHandler {
-    get state () { return this._states[this._reader.readyState]; }
-    
     constructor (input, options) {
-        this._states = {0: 'empty', 1: 'loading', 2: 'done'};
         this._reader = new FileReader();
         this._onloadstartHandler = options.onloadstartHandler || function () {};
         this._onloadendHandler = options.onloadendHandler || function () {};
