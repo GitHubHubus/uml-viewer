@@ -11,6 +11,7 @@ let endHandler = function () {
         
         Object.keys(data).map(function(key) {
             data[key].forEach(function (classObject) {
+                classObject.type = key;
                 drawer.data = classObject;
                 content += drawer.createBlock();
                 styles += drawer.createStyles();
@@ -18,6 +19,7 @@ let endHandler = function () {
         });
 
         blockDiagramm.textContent = content + styles;
+        blockDiagramm.removeAttribute('data-processed');
         mermaid.init({}, '#diagramm');
     };
 };

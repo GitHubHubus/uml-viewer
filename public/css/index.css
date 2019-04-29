@@ -6,9 +6,21 @@ html, body {
     max-width:100px;
     word-wrap: break-word;
 }
-.block > rect {
-    fill: #FF0000;
-    stroke: #FFFF00;
+g[class $='_block'] span.abstract {
+    font-weight: 1000;
+}
+
+.class_block > rect {
+    stroke-width: 3px !important;
+}
+.interface_block > rect {
+    stroke-dasharray: 1 !important;
+}
+.interface_block .title, .trait_block .title {
+    font-style: italic;
+}
+.trait_block > rect {
+    stroke-dasharray: 1 3 !important;
 }
 .control {
     height: 17% !important

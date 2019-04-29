@@ -33,7 +33,7 @@ class Drawer {
     }
     
     createStyles() {
-        return this.eol('class ' + this._data.name + ' block;');
+        return this.eol('class ' + this._data.name + ' ' + this._data.type + '_block;');
     }
     
     createBlock() {
@@ -51,7 +51,16 @@ class Drawer {
     }
     
     _getStyledName() {
-        return this._data.name.trim();
+        let abstract = '';
+        this._data.modifiers.push('abstract');
+        this._data.modifiers.forEach((m) => {
+            if (m === 'abstract') {
+                abstract = m;
+                return;
+            }
+        });
+        
+        return '<span class=\'title ' + abstract + '\'>' + this._data.name.trim() + '</span>';
     }
     
     _getStyledProperties() {
