@@ -52,7 +52,7 @@ class Drawer {
     
     _getStyledName() {
         let abstract = '';
-        this._data.modifiers.push('abstract');
+
         this._data.modifiers.forEach((m) => {
             if (m === 'abstract') {
                 abstract = m;

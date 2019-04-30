@@ -9,10 +9,12 @@ class FileHandler {
     
     _handle(event) {
         let file = event.target.files[0];
+        
+        if (file) {
+            this._reader.onloadstart = (this._onloadstartHandler)(file);
+            this._reader.onloadend = (this._onloadendHandler)(file);
 
-        this._reader.onloadstart = (this._onloadstartHandler)(file);
-        this._reader.onloadend = (this._onloadendHandler)(file);
-
-        this._reader.readAsText(file);
+            this._reader.readAsText(file);
+        }
     }
 }
