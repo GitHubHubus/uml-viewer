@@ -4,10 +4,11 @@ Here is not backend and it easy for using.
 You need just clone repo and run commands for loading dependencies
 
 ```sh
-npm install mermaid
-npm install materialize-css
+npm install mermaid materialize-css
 ```
 
 And then you can open `index.html` file from your favorite browser
+
+![Example](https://github.com/GitHubHubus/uml-viewer/blob/master/public/images/example.PNG)
 
 
